@@ -1,6 +1,9 @@
 package test;
 
 import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -42,11 +45,12 @@ public class MyContainer extends JPanel {
 			panels[i].setBorder(BorderFactory.createLineBorder(Color.blue));
 			panels[i].addMouseListener(createSelectionListener(i));
 			gridPanel.add(panels[i]);
+
 		}
 		this.add(gridPanel, BorderLayout.CENTER);
 		updateView();
 	}
-
+  
 	private MouseAdapter createSelectionListener(int i) {
 		return new MouseAdapter() {
 			@Override
@@ -74,6 +78,7 @@ public class MyContainer extends JPanel {
 
 	public SelectionMode getSelectionMode() {
 		return selectionMode;
+
 	}
 
 	private void updateView() {
