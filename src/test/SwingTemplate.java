@@ -49,9 +49,14 @@ public class SwingTemplate extends JFrame implements KeyListener {
             container.keyLeft();
         } else if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
             container.keyRight();
+        } else if (arg0.getKeyCode() == KeyEvent.VK_SPACE) {
+            if (container.getSelectionMode() == SelectionMode.HOVER) {
+                container.setSelectionMode(SelectionMode.CLICK);
+            } else {
+                container.setSelectionMode(SelectionMode.HOVER);
+            }
         }
     }
-
     @Override
     public void keyReleased(KeyEvent arg0) {
         // TODO Auto-generated method stub
