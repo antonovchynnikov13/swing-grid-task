@@ -1,5 +1,6 @@
 package test;
 
+import java.awt.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -17,15 +18,21 @@ import javax.swing.SwingUtilities;
 
 public class MyContainer extends JPanel {
 
+	private SelectionMode selectionMode = SelectionMode.HOVER;
 	public static final int PANELS_COUNT = 16;
+	private JLabel modeLabel;
 	int highlightIndex=6;
 	JLabel[] panels=new JLabel[PANELS_COUNT];
 	SwingTemplate st;
+
 	public MyContainer(int windowWidth, int windowHeight, SwingTemplate st) {
 		this.setSize(windowWidth, windowHeight);
 		this.st = st;
+		this.setLayout(new BorderLayout());
+		modeLabel = new JLabel("Mode: " + selectionMode, SwingConstants.CENTER);
+		this.add(modeLabel, BorderLayout.NORTH);
 
-		this.setLayout(new GridLayout(4, 4));
+		JPanel gridPanel = new JPanel(new GridLayout(4, 4));
 
 		Font labelFont = this.getFont();
 		Font myFont = new Font(labelFont.getName(), Font.PLAIN, 30);
@@ -36,23 +43,42 @@ public class MyContainer extends JPanel {
 			panels[i].setText(String.valueOf(i));
 			panels[i].setHorizontalAlignment(SwingConstants.CENTER);
 			panels[i].setBorder(BorderFactory.createLineBorder(Color.blue));
-			panels[i].addMouseListener(createClickListener(i));
-			this.add(panels[i]);
-		}
+			panels[i].addMouseListener(createSelectionListener(i));
+			gridPanel.add(panels[i]);
 
+		}
+		this.add(gridPanel, BorderLayout.CENTER);
 		updateView();
 	}
-
-	private MouseAdapter createClickListener(int i) {
+  
+	private MouseAdapter createSelectionListener(int i) {
 		return new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (SwingUtilities.isLeftMouseButton(e)) {
+				if (selectionMode == SelectionMode.CLICK && SwingUtilities.isLeftMouseButton(e)) {
+					highlightIndex = i;
+					updateView();
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				if (selectionMode == SelectionMode.HOVER) {
 					highlightIndex = i;
 					updateView();
 				}
 			}
 		};
+	}
+
+	public void setSelectionMode(SelectionMode mode) {
+		this.selectionMode = mode;
+		modeLabel.setText("Mode: " + mode);
+	}
+
+	public SelectionMode getSelectionMode() {
+		return selectionMode;
+
 	}
 
 	private void updateView() {

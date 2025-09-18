@@ -33,3 +33,9 @@ bin/
 out/
 target/
 *.class
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
