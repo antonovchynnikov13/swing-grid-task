@@ -7,19 +7,14 @@ import javax.swing.*;
 // Swing Program Template
 @SuppressWarnings("serial")
 public class SwingTemplate extends JFrame implements KeyListener {
-    // Name-constants to define the various dimensions
     public static final int WINDOW_WIDTH = 600;
     public static final int WINDOW_HEIGHT = 600; //константи
-    // ......
-
-    // private variables of UI components
-    // ......
-    MyContainer container; //мій контейнер
+    MyContainer container;
 
     /**
      * Constructor to setup the UI components
      */
-    public SwingTemplate() {    //конструктор для створення фрейма
+    public SwingTemplate() {
         Container cp = this.getContentPane();   //контейнер для компонентів
 
         // Content-pane sets layout
@@ -36,10 +31,9 @@ public class SwingTemplate extends JFrame implements KeyListener {
         // Source object adds listener
         // .....
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Exit when close button clicked
-        //setTitle("......"); // "this" JFrame sets title
-        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);  // or pack() the components
-        setVisible(true);   // show it
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        setVisible(true);
 
     }
 
