@@ -17,22 +17,28 @@ import javax.swing.SwingUtilities;
 
 
 public class MyContainer extends JPanel {
-
+	public static final int PANELS_COUNT = 13;
+	private final int COLS = 4;
+	private final int ROWS = 4;
 	private SelectionMode selectionMode = SelectionMode.HOVER;
-	public static final int PANELS_COUNT = 16;
+
 	private JLabel modeLabel;
 	int highlightIndex=6;
+
 	JLabel[] panels=new JLabel[PANELS_COUNT];
 	SwingTemplate st;
 
 	public MyContainer(int windowWidth, int windowHeight, SwingTemplate st) {
+
 		this.setSize(windowWidth, windowHeight);
 		this.st = st;
 		this.setLayout(new BorderLayout());
 		modeLabel = new JLabel("Mode: " + selectionMode, SwingConstants.CENTER);
+
 		this.add(modeLabel, BorderLayout.NORTH);
 
-		JPanel gridPanel = new JPanel(new GridLayout(4, 4));
+
+		JPanel gridPanel = new JPanel(new GridLayout(ROWS, COLS));
 
 		Font labelFont = this.getFont();
 		Font myFont = new Font(labelFont.getName(), Font.PLAIN, 30);
@@ -51,12 +57,17 @@ public class MyContainer extends JPanel {
 		updateView();
 	}
   
-	private MouseAdapter createSelectionListener(int i) {
+	private MouseAdapter createSelectionListener(int index) {
 		return new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (selectionMode == SelectionMode.CLICK && SwingUtilities.isLeftMouseButton(e)) {
-					highlightIndex = i;
+					highlightIndex = index;
+					updateView();
+				}
+				else{
+					highlightIndex = index;
+					deleteAt(index);
 					updateView();
 				}
 			}
@@ -64,10 +75,11 @@ public class MyContainer extends JPanel {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				if (selectionMode == SelectionMode.HOVER) {
-					highlightIndex = i;
+					highlightIndex = index;
 					updateView();
 				}
 			}
+
 		};
 	}
 
@@ -92,6 +104,26 @@ public class MyContainer extends JPanel {
 		st.setTitle("Selected index is " + String.valueOf(highlightIndex));
 	}
 
+	private void deleteAt(int i) {
+		int col = i % COLS;
+		int row = i / COLS;
+
+		int bottomRow = -1;
+		for (int idx = col; idx < PANELS_COUNT; idx += COLS) {
+			bottomRow = idx / COLS;
+		}
+
+		for (int r = row; r < bottomRow; r++) {
+			int from = (r + 1) * COLS + col;
+			int to   = r * COLS + col;
+			panels[to].setText(panels[from].getText());
+		}
+
+		int bottomIndex = bottomRow * COLS + col;
+		panels[bottomIndex].setText("");
+
+		updateView();
+	}
 
 	public void keyLeft() {
 		if (highlightIndex>0)
