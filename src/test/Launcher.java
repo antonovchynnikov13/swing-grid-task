@@ -8,7 +8,7 @@ public class Launcher {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new SwingTemplate();  // Let the constructor do the job
+                new MainWindow();  // Let the constructor do the job
             }
         });
     }
